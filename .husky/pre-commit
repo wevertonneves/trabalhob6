@@ -1,11 +1,12 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Vai para a pasta frontend
 cd frontend || exit 1
 
-# Roda o comando de teste do frontend (playwright test)
+# Roda lint primeiro, se falhar, para o commit
+npm run lint || exit 1
+
+# Se lint passou, roda os testes, se falhar, para o commit
 npm run test || exit 1
 
-echo "✅ Testes passaram. Commit liberado!"
-npm run lint
+echo "✅ Lint e testes passaram. Commit liberado!"
