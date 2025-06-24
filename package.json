@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "prepare": "husky install",
+    "start": "concurrently -k -n FRONTEND,BACKEND -c cyan,magenta \"npm run dev --prefix frontend\" \"npx ts-node backend/src/index.ts\""
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "concurrently": "^9.2.0",
+    "eslint": "^9.29.0",
+    "husky": "^8.0.3"
+  }
+}
