@@ -9,4 +9,4 @@ npm run lint || exit 1
 # Se lint passou, roda os testes, se falhar, para o commit
 npm run test || exit 1
 
-echo "✅ Lint e testes passaram. Commit liberado!"
+echo "✅ testes passaram!"
