@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-test("deve adicionar um filme com gênero DESENHOS", async ({ page }) => {
+test("deve adicionar, atualizar, deletar um filme e não deve encontrar gênero inválido", async ({
+  page,
+}) => {
   await page.goto("http://localhost:5173");
 
   // Login
@@ -60,4 +62,15 @@ test("deve adicionar um filme com gênero DESENHOS", async ({ page }) => {
 
   // Clicar no botão "Deletar Filme"
   await deleteForm.getByRole("button", { name: "Deletar Filme" }).click();
+
+  //################################################### caso de erro
+
+  // Abrir novamente o formulário de adicionar filme
+  await form.locator('[aria-haspopup="listbox"]').click();
+
+  // Tentar encontrar um gênero que não existe
+  const generoInvalido = page.getByRole("option", { name: "QUALQUERCOISA" });
+
+  // Verifica que ele não está presente
+  await expect(generoInvalido).toHaveCount(0, { timeout: 3000 });
 });

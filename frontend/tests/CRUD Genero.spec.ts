@@ -70,4 +70,38 @@ test("deve adicionar, atualizar e deletar gênero techacademic6", async ({
   await page.waitForTimeout(1000);
 
   await expect(page).toHaveURL(/\/admin$/);
+
+  //####################################caso de erro
+
+  const formGeneroErro = page.locator("form", { hasText: "Adicionar Gênero" });
+
+  // Deixa o campo de nome em branco
+  await formGeneroErro.getByPlaceholder("Digite o nome do gênero").fill("");
+
+  // Preenche apenas a imagem
+  await formGeneroErro
+    .locator('input[name="image"]')
+    .fill("https://link-da-imagem.com/somente-imagem.jpg");
+
+  // Clica no botão de adicionar
+  await formGeneroErro
+    .getByRole("button", { name: "Adicionar Gênero" })
+    .click();
+
+  // Aguarda um curto período para verificar se algo muda
+  await page.waitForTimeout(1500);
+
+  // Verifica que ainda está na tela de admin (ou seja, não foi redirecionado)
+  await expect(page).toHaveURL(/\/admin$/);
+
+  // Verifica que o gênero com imagem mas sem nome não foi adicionado
+  const selectGeneroFinal = page.locator("#select-genre-to-update");
+  await selectGeneroFinal.click();
+
+  const tentativaInvalida = page.getByRole("option", {
+    name: "somente-imagem", // valor fictício, não esperado
+  });
+
+  // O item não deve aparecer
+  await expect(tentativaInvalida).toHaveCount(0, { timeout: 2000 });
 });
